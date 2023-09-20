@@ -1,7 +1,12 @@
 from flask import Flask
 from views import views
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SESSION_SECRET")
 
 """
 @app.route("/")
