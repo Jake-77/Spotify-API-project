@@ -97,20 +97,23 @@ button{
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    transition-property: background;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
 }
-span{
-    background: #1DB954;
-    height: 100%;
-    width: 0;
+button:hover {
+    width: 200px;
+    padding: 15px 0;
+    text-align: center;
+    margin: 20px 10px;
     border-radius: 25px;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    z-index: -1;
-    transition: 0.5s;
-}
-button:hover span{
-    width: 100%;
+    font-weight: bold;
+    border: 2px solid #1DB954;
+    background: #1DB954;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .submit{
@@ -215,4 +218,21 @@ select{
     border: solid;
     border-color: #1DB954;
     border-radius: 8px;
+}
+.prevButs{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+}
+.preview{
+    width: 50%;
+    padding-left: 80px;
+    float: left;
+}
+.butSet{
+   
+}
+.butHome{
+    
 }

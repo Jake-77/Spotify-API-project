@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+</head>
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <a href="/open-spotify"><img src="/static/images/logo.png" class="logo"></a>
+            <ul>
+                <li><a href="/go-to-home">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">How it works</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="settings">
+            <form class="data" name="playlistSettings" method="post">
+                <h2>NAME OF PLAYLIST</h2>
+                <input name="title" type="text" class="textbox">
+                <h3>NUMBER OF TRACKS</h3>
+                <input name="slider" type="range" min="1" max="100" value="50" class="slider" 
+                oninput="document.getElementById('tNum').innerHTML = this.value"/>
+                <div class="trackNum" >
+                    <label id="tNum"></label>
+                </div>
+                <h4>SELECT DATA PERIOD</h4>
+                <select name="time" id="timeSelect">
+                    <option value="Last 6 Months">Last 6 Months</option>
+                    <option value="This Month">This Month</option>
+                    <option value="All Time">All Time</option>
+                </select>
+                <ul>
+                    <li><input name="oldB" type="submit" formaction="{{ url_for('views.just_top_tracks') }}" value="Top Tracks" class="submit"><span></span></li>
+                    <li><input name="bothB" type="submit" formaction="{{ url_for('views.just_top_tracks') }}" value="Combined" class="submit"><span></span></li>
+                    <li><input name="newB" type="submit" formaction="{{ url_for('views.just_top_tracks') }}" value="Recommendations" class="submit"><span></span></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -11,6 +11,7 @@ from flask import Blueprint
 from flask import render_template
 from flask import request, redirect, url_for, session
 from dotenv import load_dotenv
+from bs4 import BeautifulSoup
 
 views = Blueprint(__name__, "views")
 
@@ -89,7 +90,7 @@ def settings():
     resp = requests.get(endpoint, headers=auth_header)
     profile = json.loads(resp.text)
     session['user_id'] = profile['id']
-    return render_template("customize.html")
+    return render_template("settings.html")
 
 @views.route("/just-top-tracks",methods=['POST', 'GET'])
 def just_top_tracks():
@@ -127,25 +128,70 @@ def just_top_tracks():
     endpoint = "https://api.spotify.com/v1/me/top/tracks?"
     resp = requests.get(endpoint, headers=auth_header, params=params)
     tracks = json.loads(resp.text)
+    songs = []
     for i in range (limit):
         result = tracks['items'][i]
-        entry = "{}. {} - {}".format(i + 1, result['artists'][0]['name'], result['name'])
-        print(entry)
-    
+        songs.append(result['uri'])
+        
     head = {
         "Authorization": "Bearer {}".format(ac),
         "Content-Type": "application/json"
     }
-    params2 = {
+    params2 = json.dumps({
         "name" : playlist_name,
         "description" : desc,
         "public" : False
-    }
-    create_endpoint = "https://api.spotify.com/v1/users/{}/playlists?".format(user_id)
-    resp2 = requests.get(create_endpoint, headers=head, params=params2)
-    playlist = json.loads(resp2.text)
+    })
 
-    return render_template("home.html")
+    create_endpoint = "https://api.spotify.com/v1/users/{}/playlists".format(user_id)
+    resp2 = requests.post(url=create_endpoint, data=params2, headers=head)
+    playlist = json.loads(resp2.text)
+    pid = playlist['id']
+    session['playlist_url'] = playlist['external_urls']['spotify']
+    print(pid)
+
+    params3 = json.dumps({
+        "uris" : songs,
+        "position" : 0
+    })
+    add_endpoint = "https://api.spotify.com/v1/playlists/{}/tracks".format(pid)
+    resp3 = requests.post(url=add_endpoint, data=params3, headers=head)
+    print(resp3.status_code)
+
+    return redirect(url_for("views.preview"))
+
+@views.route("/customize", methods=['GET', 'POST'])
+def customize():
+
+
+@views.route("/preview",methods=['GET', 'POST'])
+def preview():
+    playlist_url = session.get("playlist_url",None)
+    ac = session.get('access_token')
+    auth_header = {
+        "Authorization": "Bearer {}".format(ac)
+    }
+    params = {
+        "url": playlist_url
+    }
+    endpoint = "https://open.spotify.com/oembed"
+    resp = requests.get(endpoint, params=params, headers=auth_header)
+    oembed = json.loads(resp.text)
+    htmlCode = oembed['html']
+    print(htmlCode)
+
+    soup = BeautifulSoup(open("templates/preview.html"), 'html.parser')
+    soup.select_one("#prev").append(BeautifulSoup(htmlCode, 'html.parser'))
+
+    #soup.find_all('iframe')[0]['height'] = "351"
+
+    save = soup.prettify("utf-8")
+    with open("templates/preview.html", "wb") as fp:
+        fp.write(save)
+
+    #somehow remove added embed upon exiting page
+
+    return render_template("preview.html")
 
 """
 @views.route("/profile/<username>")

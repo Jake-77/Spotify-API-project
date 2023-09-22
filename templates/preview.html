@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Preview
+  </title>
+  <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet"/>
+ </head>
+ <body>
+  <div class="banner">
+   <div class="navbar">
+    <a href="/open-spotify">
+     <img class="logo" src="/static/images/logo.png"/>
+    </a>
+    <ul>
+     <li>
+      <a href="/go-to-home">
+       Home
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       About
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       How it works
+      </a>
+     </li>
+     <li>
+      <a href="#">
+       Privacy Policy
+      </a>
+     </li>
+    </ul>
+   </div>
+   <div class="cont">
+    <div class="preview" id="prev">
+     <iframe allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen="" frameborder="0" height="352" loading="lazy" src="https://open.spotify.com/embed/playlist/20m50sUP3qd8C0G2OVwlQ6?utm_source=oembed" style="border-radius: 12px" title="Spotify Embed: NEW" width="100%">
+     </iframe>
+    </div>
+    <div class="prevButs">
+     <a href="/settings">
+      <button class="butSet" name="again" type="button">
+       <span>
+       </span>
+       NEW PLAYLIST
+      </button>
+     </a>
+     <a href="/">
+      <button class="butHome" name="logout" type="button">
+       <span>
+       </span>
+       LOGOUT
+      </button>
+     </a>
+    </div>
+   </div>
+  </div>
+ </body>
+</html>
